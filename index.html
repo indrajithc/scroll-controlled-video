@@ -6,7 +6,7 @@
     <title>Scroll Controlled Video</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { height: 200vh; font-family: Arial, sans-serif; overflow-x: hidden; }
+        body { font-family: Arial, sans-serif; overflow-x: hidden; }
         .container { display: flex; height: 100vh; position: fixed; width: 100%; }
         .left { width: 50%; display: flex; align-items: center; justify-content: center; padding: 20px; font-size: 24px; }
         .right { width: 50%; display: flex; align-items: center; justify-content: center; }
@@ -19,23 +19,31 @@
             <p>Scroll to control the video</p>
         </div>
         <div class="right">
-            <video id="scrollVideo" src="/assets/web-animation-flow.mp4" playsinline></video>
+            <video id="scrollVideo" src="/assets/web-animation-flow.mp4" playsinline muted role="img"></video>
         </div>
     </div>
     <script>
-        const video = document.getElementById('scrollVideo');
-        let lastScrollY = window.scrollY;
+          const video = document.getElementById('scrollVideo');
+        let lastScrollY = 0;
+        let duration = 0;
+        let scrollHeight = 0;
+
+        video.addEventListener('loadedmetadata', () => {
+            duration = video.duration;
+            scrollHeight = duration * 2000; // Adjusting height for smoother scrolling
+            document.body.style.height = `${scrollHeight}px`;
+        });
 
         window.addEventListener('scroll', () => {
-            const scrollY = window.scrollY;
-            const scrollDirection = scrollY > lastScrollY ? 1 : -1;
-            const frameRate = 0.05;
-            
-            console.log({ video: video.readyState, scrollY, lastScrollY, scrollDirection, frameRate });
-            if (video.readyState >= 2) {
-                video.currentTime = Math.max(0, Math.min(video.duration, video.currentTime + scrollDirection * frameRate));
+            if (duration > 0) {
+                const scrollPos = window.scrollY;
+                const scrollFraction = scrollPos / scrollHeight;
+                const newTime = Math.max(0, Math.min(duration, scrollFraction * duration));
+                
+                if (Math.abs(newTime - video.currentTime) > 0.1) { // Prevents redundant updates
+                    video.currentTime = newTime.toFixed(2);
+                }
             }
-            lastScrollY = scrollY;
         });
     </script>
 </body>
