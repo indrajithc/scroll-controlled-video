@@ -17,6 +17,7 @@
       overflow-x: hidden;
       background-color: black;
       color: white;
+      scroll-behavior: smooth;
     }
 
     .container {
@@ -60,34 +61,41 @@
       </video>
     </div>
   </div>
+
   <script>
     const video = document.getElementById('scrollVideo');
     let duration = 0;
     let scrollHeight = 0;
+    let targetTime = 0;
+    let isPlaying = false;
 
     video.addEventListener('loadedmetadata', () => {
       duration = video.duration;
       scrollHeight = duration * 2000; // Adjust height dynamically
       document.body.style.height = `${scrollHeight}px`;
       video.pause(); // Ensure the video doesn't auto-play
+      animateVideo();
     });
 
-
-    function floorDecimal(e) {
-      return Math.floor(100 * Number(e).toFixed(3)) / 100
+    function lerp(start, end, amt) {
+      return (1 - amt) * start + amt * end;
     }
 
     window.addEventListener('scroll', () => {
       if (duration > 0) {
         const scrollPos = window.scrollY;
         const scrollFraction = scrollPos / (scrollHeight - window.innerHeight);
-        const newTime = Math.max(0, Math.min(duration, scrollFraction * duration));
-
-        if (Math.abs(newTime - video.currentTime) > 0.05) { // Smoother updates
-          video.currentTime =  floorDecimal(newTime);
-        }
+        targetTime = Math.max(0, Math.min(duration, scrollFraction * duration));
       }
     });
+
+    function animateVideo() {
+      if (video.currentTime?.toFixed(3) !== targetTime?.toFixed(3)) {
+        console.log(video.currentTime, targetTime);
+        video.currentTime = lerp(video.currentTime, targetTime, 0.1); // Smooth interpolation
+      }
+      requestAnimationFrame(animateVideo);
+    }
   </script>
 </body>
 
