@@ -1,4 +1,3 @@
-```md
 # Scroll Controlled Video 🎥🚀
 
 This project enables a **smooth scroll-based video control** where the video progresses as the user scrolls. The playback is dynamically mapped to the scroll position, ensuring a **lag-free, precise experience**.
@@ -34,4 +33,3 @@ This project enables a **smooth scroll-based video control** where the video pro
 
 ## 📝 License
 This project is open-source under the [MIT License](LICENSE).
-```
