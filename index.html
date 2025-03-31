@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scroll Controlled Video</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { height: 200vh; font-family: Arial, sans-serif; overflow-x: hidden; }
+        .container { display: flex; height: 100vh; position: fixed; width: 100%; }
+        .left { width: 50%; display: flex; align-items: center; justify-content: center; padding: 20px; font-size: 24px; }
+        .right { width: 50%; display: flex; align-items: center; justify-content: center; }
+        video { width: 100%; height: auto; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left">
+            <p>Scroll to control the video</p>
+        </div>
+        <div class="right">
+            <video id="scrollVideo" src="/assets/web-animation-flow.mp4" playsinline></video>
+        </div>
+    </div>
+    <script>
+        const video = document.getElementById('scrollVideo');
+        let lastScrollY = window.scrollY;
+
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            const scrollDirection = scrollY > lastScrollY ? 1 : -1;
+            const frameRate = 0.05;
+            
+            console.log({ video: video.readyState, scrollY, lastScrollY, scrollDirection, frameRate });
+            if (video.readyState >= 2) {
+                video.currentTime = Math.max(0, Math.min(video.duration, video.currentTime + scrollDirection * frameRate));
+            }
+            lastScrollY = scrollY;
+        });
+    </script>
+</body>
+</html>
