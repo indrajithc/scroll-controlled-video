@@ -52,7 +52,3 @@ const frameCount = 1800; // adjust based on your video FPS * duration
 ## 📝 License
 This project is open-source under the [MIT License](LICENSE).
 ```
-
----
-
-Let me know if you want to split the README into two sections — one for video and one for frame-based control — or include a sample `index.html` structure.
