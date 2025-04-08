@@ -22,6 +22,21 @@ def serve_v2_files():
     """Serve the main static index file."""
     return send_from_directory(STATIC_FOLDER, "examples/v2/index.html")
 
+@app.route("/v3")
+def serve_v3_files():
+    """Serve the main static index file."""
+    return send_from_directory(STATIC_FOLDER, "examples/v3/index.html")
+
+@app.route("/v4")
+def serve_v4_files():
+    """Serve the main static index file."""
+    return send_from_directory(STATIC_FOLDER, "examples/v4/index.html")
+
+@app.route("/v5")
+def serve_v5_files():
+    """Serve the main static index file."""
+    return send_from_directory(STATIC_FOLDER, "examples/v5/index.html")
+
 @app.route("/blob-video")
 def serve_video():
     """Serve a specific video file."""
