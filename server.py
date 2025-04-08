@@ -12,6 +12,11 @@ def serve_static_files():
     """Serve the main static index file."""
     return send_from_directory(STATIC_FOLDER, "index.html")
 
+@app.route("/v1")
+def serve_v1_files():
+    """Serve the main static index file."""
+    return send_from_directory(STATIC_FOLDER, "examples/v1/index.html")
+
 @app.route("/blob-video")
 def serve_video():
     """Serve a specific video file."""
