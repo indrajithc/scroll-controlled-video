@@ -8,46 +8,45 @@
     body {
       margin: 0;
       height: 300vh;
+      background-color: black;
     }
-    canvas {
+
+    .canvas-wrapper {
       position: fixed;
       top: 0;
       left: 0;
-      display: block;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    canvas {
+      width: 100%;
+      max-width: 1040px;
+      aspect-ratio: 1 / 1;
+      height: auto;
     }
   </style>
 </head>
 <body>
-  <canvas id="animationCanvas"></canvas>
+  <div class="canvas-wrapper">
+    <canvas id="animationCanvas" width="1040" height="1040"></canvas>
+  </div>
 
   <script>
     const frameCount = 300;
     const images = [];
     let imagesLoaded = 0;
+
     const canvas = document.getElementById('animationCanvas');
     const ctx = canvas.getContext('2d');
-
-    let imgAspectRatio = 16 / 9; // Replace this with your actual image aspect ratio
-
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-
-    resizeCanvas();
-
-    window.addEventListener('resize', () => {
-      resizeCanvas();
-      render();
-    });
 
     for (let i = 1; i <= frameCount; i++) {
       const img = new Image();
       img.src = `/assets/fms/frames/frame_${String(i).padStart(4, '0')}.jpg`;
       img.onload = () => {
-        if (i === 1) {
-          imgAspectRatio = img.width / img.height;
-        }
         imagesLoaded++;
         if (imagesLoaded === frameCount) {
           render();
@@ -64,31 +63,18 @@
         frameCount - 1,
         Math.floor(scrollFraction * frameCount)
       );
-      const img = images[frameIndex];
-      if (!img) return;
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(images[frameIndex], 0, 0, canvas.width, canvas.height);
 
-      const canvasRatio = canvas.width / canvas.height;
-      let drawWidth, drawHeight;
-
-      if (canvasRatio > imgAspectRatio) {
-        // Canvas is wider than image
-        drawHeight = canvas.height;
-        drawWidth = drawHeight * imgAspectRatio;
-      } else {
-        // Canvas is taller than image
-        drawWidth = canvas.width;
-        drawHeight = drawWidth / imgAspectRatio;
-      }
-
-      const x = (canvas.width - drawWidth) / 2;
-      const y = (canvas.height - drawHeight) / 2;
-
-      ctx.drawImage(img, x, y, drawWidth, drawHeight);
+      requestAnimationFrame(render);
     }
 
     window.addEventListener('scroll', () => {
+      requestAnimationFrame(render);
+    });
+
+    window.addEventListener('resize', () => {
       requestAnimationFrame(render);
     });
   </script>
