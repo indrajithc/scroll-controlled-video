@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Scroll-Controlled Animation</title>
+  <style>
+    body {
+      margin: 0;
+      height: 700vh;
+      background-color: black;
+    }
+
+    .canvas-wrapper {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    canvas {
+      width: 100%;
+      max-width: 960px;
+      aspect-ratio: 96 / 54;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="canvas-wrapper">
+    <canvas id="animationCanvas" width="960" height="540"></canvas>
+  </div>
+
+  <script>
+    const frameCount = 900;
+    const images = [];
+    let imagesLoaded = 0;
+
+    const canvas = document.getElementById('animationCanvas');
+    const ctx = canvas.getContext('2d');
+
+    for (let i = 1; i <= frameCount; i++) {
+      const img = new Image();
+      img.src = `/assets/fms/frames30_v1/frame_${String(i).padStart(4, '0')}.jpg`;
+      img.onload = () => {
+        imagesLoaded++;
+        if (imagesLoaded === frameCount) {
+          render();
+        }
+      };
+      images.push(img);
+    }
+
+    function render() {
+      const scrollTop = window.scrollY;
+      const maxScrollTop = document.body.scrollHeight - window.innerHeight;
+      const scrollFraction = scrollTop / maxScrollTop;
+      const frameIndex = Math.min(
+        frameCount - 1,
+        Math.floor(scrollFraction * frameCount)
+      );
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(images[frameIndex], 0, 0, canvas.width, canvas.height);
+
+      requestAnimationFrame(render);
+    }
+
+    window.addEventListener('scroll', () => {
+      requestAnimationFrame(render);
+    });
+
+    window.addEventListener('resize', () => {
+      requestAnimationFrame(render);
+    });
+  </script>
+</body>
+</html>
