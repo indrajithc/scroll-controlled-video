@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Scroll-Controlled Animation</title>
   <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
       height: 1000vh;
@@ -30,6 +35,7 @@
     }
   </style>
 </head>
+
 <body>
   <div class="canvas-wrapper">
     <canvas id="animationCanvas" width="960" height="540"></canvas>
@@ -79,4 +85,5 @@
     });
   </script>
 </body>
+
 </html>

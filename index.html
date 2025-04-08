@@ -1,14 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Scroll-Controlled Animation</title>
   <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
-      height: 300vh; /* Adjust based on the number of frames */
+      height: 300vh;
+      /* Adjust based on the number of frames */
     }
+
     canvas {
       position: fixed;
       top: 0;
@@ -18,8 +25,9 @@
     }
   </style>
 </head>
+
 <body>
-  <canvas id="animationCanvas" width="1080" height="1080" ></canvas>
+  <canvas id="animationCanvas" width="1080" height="1080"></canvas>
   <script>
     const frameCount = 300; // Total number of frames
     const images = [];
@@ -28,7 +36,7 @@
     const canvas = document.getElementById('animationCanvas');
     const ctx = canvas.getContext('2d');
 
-    const dimensionConst =  window.innerWidth < window.innerHeight ? window.innerWidth : window.innerHeight;
+    const dimensionConst = window.innerWidth < window.innerHeight ? window.innerWidth : window.innerHeight;
     canvas.width = dimensionConst;
     canvas.height = dimensionConst;
 
@@ -71,4 +79,5 @@
     });
   </script>
 </body>
+
 </html>
