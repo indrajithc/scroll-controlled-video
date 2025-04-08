@@ -92,48 +92,44 @@
     //     }
     //   }
     // });
+    
+
     const video = document.getElementById('scrollVideo');
-    const container = document.getElementById('video-container');
     let duration = 0;
     let scrollHeight = 0;
-    let isPlaying = false;
-
-    // Initialize Intersection Observer
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          isPlaying = true;
-          requestAnimationFrame(updateVideoPlayback);
-        } else {
-          isPlaying = false;
-        }
-      });
-    }, { threshold: 0.5 });
-
-    observer.observe(container);
+    let scrollY = 0;
 
     video.addEventListener('loadedmetadata', () => {
       duration = video.duration;
-      scrollHeight = duration * 1000; // Adjust multiplier as needed
-      document.body.style.height = `${scrollHeight + window.innerHeight}px`;
+      scrollHeight = duration * 2000;
+      document.body.style.height = `${scrollHeight}px`;
       video.pause();
     });
 
-    function updateVideoPlayback() {
-      if (!isPlaying) return;
+    // Track scroll position only
+    window.addEventListener('scroll', () => {
+      scrollY = window.scrollY;
+    });
 
-      const scrollTop = window.scrollY;
-      const maxScrollTop = scrollHeight - window.innerHeight;
-      const scrollFraction = Math.min(scrollTop / maxScrollTop, 1);
-      const targetTime = duration * scrollFraction;
+    function render() {
+      if (duration > 0) {
+        const scrollFraction = scrollY / (scrollHeight - window.innerHeight);
+        const targetTime = Math.max(0, Math.min(duration, scrollFraction * duration));
 
-      if (Math.abs(video.currentTime - targetTime) > 0.01) {
-        video.currentTime = targetTime;
+        // Immediately jump to target frame
+        if (Math.abs(video.currentTime - targetTime) > 0.03) {
+          try {
+            video.currentTime = targetTime;
+          } catch (err) {
+            // Ignore frame-jumping errors (common on some browsers)
+          }
+        }
       }
 
-      requestAnimationFrame(updateVideoPlayback);
+      requestAnimationFrame(render);
     }
 
+    requestAnimationFrame(render);
   </script>
 </body>
 
