@@ -65,71 +65,71 @@
     </div>
   </div>
   <script>
-    // const video = document.getElementById('scrollVideo');
-    // let duration = 0;
-    // let scrollHeight = 0;
-
-    // video.addEventListener('loadedmetadata', () => {
-    //   duration = video.duration;
-    //   scrollHeight = duration * 2000; // Adjust height dynamically
-    //   document.body.style.height = `${scrollHeight}px`;
-    //   video.pause(); // Ensure the video doesn't auto-play
-    // });
-
-
-    // function floorDecimal(e) {
-    //   return Math.floor(100 * Number(e).toFixed(3)) / 100
-    // }
-
-    // window.addEventListener('scroll', () => {
-    //   if (duration > 0) {
-    //     const scrollPos = window.scrollY;
-    //     const scrollFraction = scrollPos / (scrollHeight - window.innerHeight);
-    //     const newTime = Math.max(0, Math.min(duration, scrollFraction * duration));
-
-    //     if (Math.abs(newTime - video.currentTime) > 0.05) { // Smoother updates
-    //       video.currentTime =  floorDecimal(newTime);
-    //     }
-    //   }
-    // });
-    
-
     const video = document.getElementById('scrollVideo');
     let duration = 0;
     let scrollHeight = 0;
-    let scrollY = 0;
 
     video.addEventListener('loadedmetadata', () => {
       duration = video.duration;
-      scrollHeight = duration * 2000;
+      scrollHeight = duration * 2000; // Adjust height dynamically
       document.body.style.height = `${scrollHeight}px`;
-      video.pause();
+      video.pause(); // Ensure the video doesn't auto-play
     });
 
-    // Track scroll position only
-    window.addEventListener('scroll', () => {
-      scrollY = window.scrollY;
-    });
 
-    function render() {
-      if (duration > 0) {
-        const scrollFraction = scrollY / (scrollHeight - window.innerHeight);
-        const targetTime = Math.max(0, Math.min(duration, scrollFraction * duration));
-
-        // Immediately jump to target frame
-        if (Math.abs(video.currentTime - targetTime) > 0.03) {
-          try {
-            video.currentTime = targetTime;
-          } catch (err) {
-            // Ignore frame-jumping errors (common on some browsers)
-          }
-        }
-      }
-
-      requestAnimationFrame(render);
+    function floorDecimal(e) {
+      return Math.floor(100 * Number(e).toFixed(3)) / 100
     }
 
-    requestAnimationFrame(render);
+    window.addEventListener('scroll', () => {
+      if (duration > 0) {
+        const scrollPos = window.scrollY;
+        const scrollFraction = scrollPos / (scrollHeight - window.innerHeight);
+        const newTime = Math.max(0, Math.min(duration, scrollFraction * duration));
+
+        if (Math.abs(newTime - video.currentTime) > 0.05) { // Smoother updates
+          video.currentTime =  floorDecimal(newTime);
+        }
+      }
+    });
+    
+
+    // const video = document.getElementById('scrollVideo');
+    // let duration = 0;
+    // let scrollHeight = 0;
+    // let scrollY = 0;
+
+    // video.addEventListener('loadedmetadata', () => {
+    //   duration = video.duration;
+    //   scrollHeight = duration * 2000;
+    //   document.body.style.height = `${scrollHeight}px`;
+    //   video.pause();
+    // });
+
+    // // Track scroll position only
+    // window.addEventListener('scroll', () => {
+    //   scrollY = window.scrollY;
+    // });
+
+    // function render() {
+    //   if (duration > 0) {
+    //     const scrollFraction = scrollY / (scrollHeight - window.innerHeight);
+    //     const targetTime = Math.max(0, Math.min(duration, scrollFraction * duration));
+
+    //     // Immediately jump to target frame
+    //     if (Math.abs(video.currentTime - targetTime) > 0.03) {
+    //       try {
+    //         video.currentTime = targetTime;
+    //       } catch (err) {
+    //         // Ignore frame-jumping errors (common on some browsers)
+    //       }
+    //     }
+    //   }
+
+    //   requestAnimationFrame(render);
+    // }
+
+    // requestAnimationFrame(render);
   </script>
 </body>
 
