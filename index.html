@@ -19,7 +19,7 @@
   </style>
 </head>
 <body>
-  <canvas id="animationCanvas"></canvas>
+  <canvas id="animationCanvas" width="1080" height="1080" ></canvas>
   <script>
     const frameCount = 300; // Total number of frames
     const images = [];
@@ -28,8 +28,9 @@
     const canvas = document.getElementById('animationCanvas');
     const ctx = canvas.getContext('2d');
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    const dimensionConst =  window.innerWidth < window.innerHeight ? window.innerWidth : window.innerHeight;
+    canvas.width = dimensionConst;
+    canvas.height = dimensionConst;
 
     // Preload images
     for (let i = 1; i <= frameCount; i++) {
